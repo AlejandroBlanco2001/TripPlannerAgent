@@ -18,7 +18,7 @@ ENV PYTHONUNBUFFERED=1 \
 
 COPY --from=builder /app/.venv /app/.venv
 
-COPY main.py ./
+COPY main.py config.py ./
 COPY db/__init__.py db/agent.py ./db/
 
 EXPOSE 8000

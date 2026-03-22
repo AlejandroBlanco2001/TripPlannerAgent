@@ -1,0 +1,3 @@
+# Keep secrets and local env files out of the image build context.
+.env
+db/.env

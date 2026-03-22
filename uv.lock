@@ -530,6 +530,7 @@ dependencies = [
     { name = "asyncpg" },
     { name = "google-adk" },
     { name = "openinference-instrumentation-google-adk" },
+    { name = "pydantic-settings" },
 ]
 
 [package.metadata]
@@ -538,6 +539,7 @@ requires-dist = [
     { name = "asyncpg", specifier = ">=0.30.0" },
     { name = "google-adk", specifier = ">=1.27.2" },
     { name = "openinference-instrumentation-google-adk", specifier = ">=0.1.10" },
+    { name = "pydantic-settings", specifier = ">=2.0.0" },
 ]
 
 [[package]]

@@ -3,29 +3,27 @@ services:
     build:
       context: .
       dockerfile: dockerfile
+    env_file:
+      - ./.env
     ports:
       - "8000:8000"
     depends_on:
       - db
-    environment:
-      SESSION_SERVICE_URI: postgresql+asyncpg://postgres:postgres@db:5432/postgres
-      GOOGLE_API_KEY: AIzaSyCmu6SB0tpA_AEf3utwnYrTzKApVbpX_Xw
+      - phoenix
   phoenix:
     image: arizephoenix/phoenix:latest
+    env_file:
+      - ./.env
     depends_on:
       - db
     ports:
       - 6006:6006
       - 4317:4317
-    environment:
-      - PHOENIX_SQL_DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
   db:
     image: postgres:18
     restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+    env_file:
+      - ./.env
     ports:
       - 5432
     volumes:
