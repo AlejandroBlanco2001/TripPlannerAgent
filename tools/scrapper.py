@@ -5,6 +5,7 @@ from pathlib import Path
 from fast_flights import FlightData, Passengers, Result, get_flights
 from typing import Literal
 from pydantic import ValidationError
+from google.adk.tools import ToolContext
 
 from cachetools import TTLCache, cached
 from models.models import Flight
@@ -26,6 +27,24 @@ _SEAT_MAP = {
 }
 
 logger = logging.getLogger(__name__)
+
+
+def user_selected_flight(flight_information: dict, tool_context: ToolContext) -> dict:
+    """Confirm and store the flight the user has chosen.
+
+    Call this tool once the user has explicitly selected a specific flight from
+    the options presented. The selection is saved to session state so downstream
+    agents (e.g. itinerary planner) can access it.
+
+    Args:
+        flight_information: The full flight details of the chosen flight.
+        tool_context: ADK tool context used to persist the selection in session state.
+
+    Returns:
+        The confirmed flight information dict.
+    """
+    tool_context.state["selected_flight_information"] = flight_information
+    return flight_information
 
 
 def search_google_flights(
