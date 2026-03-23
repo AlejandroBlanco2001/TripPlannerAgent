@@ -10,4 +10,11 @@ dependencies = [
     "asyncpg>=0.30.0",
     "openinference-instrumentation-google-adk>=0.1.10",
     "arize-phoenix-otel>=0.15.0",
+    "cachetools>=7.0.5",
+    "fast-flights>=2.2",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.7",
 ]

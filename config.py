@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 
+
 class Config(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -32,4 +33,10 @@ class Config(BaseSettings):
         ...,
         alias="WEB_ALLOWED",
         description="Whether the web application is allowed to be accessed.",
+    )
+
+    airports_sqlite_path: str = Field(
+        ...,
+        alias="AIRPORTS_SQLITE_PATH",
+        description="The path to the airports.sqlite database.",
     )

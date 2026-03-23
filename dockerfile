@@ -8,7 +8,6 @@ ENV UV_COMPILE_BYTECODE=1 \
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-cache --no-install-project
 
-# --- runtime ---
 FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim
 
 WORKDIR /app
@@ -18,8 +17,7 @@ ENV PYTHONUNBUFFERED=1 \
 
 COPY --from=builder /app/.venv /app/.venv
 
-COPY main.py config.py ./
-COPY db/__init__.py db/agent.py ./db/
+COPY . .
 
 EXPOSE 8000
 
