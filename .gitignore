@@ -10,5 +10,4 @@ wheels/
 .venv
 
 # Environment variables
-db/.env
-**/.env
+.env
