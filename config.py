@@ -9,12 +9,12 @@ class Config(BaseSettings):
         extra="ignore",
     )
 
-    phoenix_collector_endpoint: str = Field(
+    phoenix_collector_endpoint: str | None = Field(
         ...,
         alias="PHOENIX_COLLECTOR_ENDPOINT",
         description="The endpoint to send telemetry data to Phoenix.",
     )
-    prod_cors_origin: str = Field(
+    prod_cors_origin: str | None = Field(
         ...,
         alias="PROD_CORS_ORIGIN",
         description="The origin of the web application.",
@@ -39,4 +39,14 @@ class Config(BaseSettings):
         ...,
         alias="AIRPORTS_SQLITE_PATH",
         description="The path to the airports.sqlite database.",
+    )
+    enable_google_cloud_trace: bool = Field(
+        ...,
+        alias="ENABLE_GOOGLE_CLOUD_TRACE",
+        description="Whether to enable Google Cloud Trace.",
+    )
+    google_cloud_project: str = Field(
+        ...,
+        alias="GOOGLE_CLOUD_PROJECT",
+        description="The Google Cloud project to use for tracing.",
     )
