@@ -17,16 +17,22 @@ _airports_conn: sqlite3.Connection | None = None
 _airports_lock = threading.Lock()
 
 Trip = Literal["one-way", "round-trip"]
-Seat = Literal["economy", "premium_economy", "business", "first"]
+_FlightsSeat = Literal["economy", "premium-economy", "business", "first"]
 
-_SEAT_MAP = {
+_SEAT_MAP: dict[str, _FlightsSeat] = {
     "economy": "economy",
-    "premium_economy": "premium-economy",
+    "premium-economy": "premium-economy",
     "business": "business",
     "first": "first",
 }
 
 logger = logging.getLogger(__name__)
+
+def user_persona(user_persona: str, tool_context: ToolContext) -> dict:
+    """Get the user's persona.
+    """
+    tool_context.state["user_persona"] = user_persona
+    return {"status": "success", "user_persona": user_persona}
 
 
 def user_selected_flight(flight_information: dict, tool_context: ToolContext) -> dict:
@@ -57,9 +63,9 @@ def search_google_flights(
     children: int = 0,
     infants_in_seat: int = 0,
     infants_on_lap: int = 0,
-    seat: Seat = "economy",
+    seat: _FlightsSeat = "economy",
     max_stops: int | None = None,
-) -> dict:
+) -> Result | None:
     """Search for flights on Google Flights between two airports.
 
     This specifies the trip type (round-trip or one-way). Note that multi-city
@@ -85,7 +91,8 @@ def search_google_flights(
     """
     from datetime import date as date_type
 
-    resolved_date = date or date_type.today().isoformat()
+    resolved_date = date_type.fromisoformat(date) if date else date_type.today()
+    resolved_return_date = date_type.fromisoformat(return_date) if return_date else None
 
     try:
         flight = Flight(
@@ -93,7 +100,7 @@ def search_google_flights(
             destination=destination,
             departure_date=resolved_date,
             trip=trip,
-            return_date=return_date or None,
+            return_date=resolved_return_date,
             adults=adults,
             children=children,
             infants_in_seat=infants_in_seat,
@@ -103,7 +110,8 @@ def search_google_flights(
         )
     except ValidationError as e:
         errors = "; ".join(err["msg"] for err in e.errors())
-        return {"status": "error", "error_message": errors}
+        logger.error(f"Error validating flight: {errors}")
+        return None
 
     flight_data = [
         FlightData(
@@ -122,6 +130,7 @@ def search_google_flights(
         )
 
     try:
+        seat: _FlightsSeat = _SEAT_MAP[flight.seat]
         result: Result = get_flights(
             flight_data=flight_data,
             trip=flight.trip,
@@ -131,14 +140,14 @@ def search_google_flights(
                 infants_in_seat=flight.infants_in_seat,
                 infants_on_lap=flight.infants_on_lap,
             ),
-            seat=_SEAT_MAP[flight.seat],
+            seat=seat,
             fetch_mode="fallback",
         )
     except Exception as e:
         logger.error(
             f"Error fetching Google Flights ({origin} → {destination}, {date}): {e}"
         )
-        return {"status": "error", "error_message": str(e)}
+        return None
 
     return result
 

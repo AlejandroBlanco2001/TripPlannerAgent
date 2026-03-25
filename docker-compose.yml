@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: dockerfile
     env_file:
-      - ./.env
+      - ./.env.dev
     environment:
       SESSION_SERVICE_URI: postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@agent_db:5432/${POSTGRES_DB:-postgres}
     ports:
@@ -14,7 +14,7 @@ services:
   phoenix:
     image: arizephoenix/phoenix:latest
     env_file:
-      - ./.env
+      - ./.env.dev
     environment:
       PHOENIX_SQL_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@phoenix_db:5432/${POSTGRES_DB:-postgres}
     depends_on:
@@ -28,7 +28,7 @@ services:
     image: postgres:18
     restart: always
     env_file:
-      - ./.env
+      - ./.env.dev
     ports:
       - "5432:5432"
     volumes:
@@ -37,7 +37,7 @@ services:
     image: postgres:18
     restart: always
     env_file:
-      - ./.env
+      - ./.env.dev
     ports:
       - "5433:5432"
     volumes:

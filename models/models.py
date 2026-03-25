@@ -27,7 +27,7 @@ class Flight(BaseModel):
         0, ge=0, description="Number of infants occupying their own seat"
     )
     infants_on_lap: int = Field(0, ge=0, description="Number of infants on a lap")
-    seat: Literal["economy", "premium_economy", "business", "first"] = Field(
+    seat: Literal["economy", "premium-economy", "business", "first"] = Field(
         "economy", description="Cabin class"
     )
     max_stops: Optional[int] = Field(

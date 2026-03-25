@@ -10,7 +10,7 @@ from fastapi import FastAPI
 AGENTS_DIR = str(pathlib.Path(__file__).parent)
 config = Config()
 
-if not config.enable_google_cloud_trace:
+if not config.enable_google_cloud_trace and config.enable_local_trace:
     tracer_provider = register(
         project_name="default",
         auto_instrument=True,

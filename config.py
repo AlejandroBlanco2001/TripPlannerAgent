@@ -46,7 +46,12 @@ class Config(BaseSettings):
         description="Whether to enable Google Cloud Trace.",
     )
     google_cloud_project: str = Field(
-        default="Test",
+        "Test",
         alias="GOOGLE_CLOUD_PROJECT",
         description="The Google Cloud project ID to use for tracing.",
+    )
+    enable_local_trace: bool = Field(
+        False,
+        alias="ENABLE_LOCAL_TRACE",
+        description="Whether to enable local trace.",
     )
