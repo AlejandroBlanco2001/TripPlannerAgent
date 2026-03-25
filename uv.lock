@@ -556,6 +556,7 @@ dependencies = [
     { name = "google-adk" },
     { name = "openinference-instrumentation-google-adk" },
     { name = "pydantic-settings" },
+    { name = "python-dotenv" },
 ]
 
 [package.dev-dependencies]
@@ -572,6 +573,7 @@ requires-dist = [
     { name = "google-adk", specifier = ">=1.27.2" },
     { name = "openinference-instrumentation-google-adk", specifier = ">=0.1.10" },
     { name = "pydantic-settings", specifier = ">=2.0.0" },
+    { name = "python-dotenv", specifier = ">=1.2.2" },
 ]
 
 [package.metadata.requires-dev]

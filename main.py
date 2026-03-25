@@ -23,19 +23,20 @@ session_service_uri = (
     else config.session_service_uri
 )
 
-app = get_fast_api_app(
-    agents_dir=AGENTS_DIR,
-    session_service_uri=config.session_service_uri,
-    web=config.web_allowed,
-    trace_to_cloud=config.enable_google_cloud_trace,
-)
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     scrapper.open_airports_connection(config.airports_sqlite_path)
     yield
     scrapper.close_airports_connection()
+
+
+app = get_fast_api_app(
+    agents_dir=AGENTS_DIR,
+    session_service_uri=config.session_service_uri,
+    web=config.web_allowed,
+    trace_to_cloud=config.enable_google_cloud_trace,
+    lifespan=lifespan,
+)
 
 
 if __name__ == "__main__":
