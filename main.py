@@ -17,6 +17,12 @@ if not config.enable_google_cloud_trace:
         endpoint=config.phoenix_collector_endpoint,
     )
 
+session_service_uri = (
+    "sqlite+aiosqlite:///./sessions.db"
+    if not config.session_service_uri
+    else config.session_service_uri
+)
+
 app = get_fast_api_app(
     agents_dir=AGENTS_DIR,
     session_service_uri=config.session_service_uri,
