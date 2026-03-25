@@ -46,7 +46,7 @@ class Config(BaseSettings):
         description="Whether to enable Google Cloud Trace.",
     )
     google_cloud_project: str = Field(
-        "Test"
+        default="Test",
         alias="GOOGLE_CLOUD_PROJECT",
         description="The Google Cloud project ID to use for tracing.",
     )
